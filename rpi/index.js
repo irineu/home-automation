@@ -10,13 +10,15 @@ const app = express();
 const httpServer = http.Server(app);
 const io = new socketIO.Server(httpServer);
 
+let history = {};
+
 io.on('connection', function(socket) {
 
     socket.on('LUX', (data) => {
         if(devices[data.device]){
-            let v = Math.round(parseFloat(data.value) * 100);
-            console.log('sending to ' + data.device + ", value: " + v);
-            hachiNIO.send(devices[data.device], {transaction : "LUX"}, v.toString());
+            history[data.device] = Math.round(parseFloat(data.value) * 100);
+            console.log('sending to ' + data.device + ", value: " + history[data.device]);
+            hachiNIO.send(devices[data.device], {transaction : "LUX"}, history[data.device].toString());
         }
     });
 
@@ -63,6 +65,10 @@ server.on("data", (socketClient, header, dataBuffer) => {
             devices[deviceId].lastHB = Date.now();
             devices[deviceId].deviceLabel = deviceId;
             console.log("NEW DEVICE:" + deviceId);
+
+            if(history[deviceId]){
+                hachiNIO.send(devices[deviceId], {transaction : "LUX"}, history[deviceId].toString());
+            }
 
             break;
         case "HB":
