@@ -349,6 +349,8 @@
 
     <x-knob id="lamp01" svgsymbolid="circle-with-dot" divisions="0" min="0" max=".65"  value="0" style="padding: 2em;transform: rotate(-90deg);"></x-knob>
     <x-knob id="lamp02" svgsymbolid="circle-with-dot" divisions="0" min="0" max=".65"  value="0" style="padding: 2em;transform: rotate(-90deg);"></x-knob>
+    <x-knob id="lamp03" svgsymbolid="circle-with-dot" divisions="0" min="0" max=".65"  value="0" style="padding: 2em;transform: rotate(-90deg);"></x-knob>
+    <x-knob id="lamp04" svgsymbolid="circle-with-dot" divisions="0" min="0" max=".65"  value="0" style="padding: 2em;transform: rotate(-90deg);"></x-knob>
 
     <script type="text/javascript">
 
@@ -369,6 +371,24 @@
             socket.emit('LUX', {
                 device: "L02",
                 value: document.getElementById('lamp02').value
+            });
+        });
+
+        document.getElementById('lamp03').addEventListener('change', function(ev) {
+            console.log(document.getElementById('lamp03').value);
+
+            socket.emit('LUX', {
+                device: "L03",
+                value: document.getElementById('lamp03').value
+            });
+        });
+
+        document.getElementById('lamp04').addEventListener('change', function(ev) {
+            console.log(document.getElementById('lamp04').value);
+
+            socket.emit('LUX', {
+                device: "L04",
+                value: document.getElementById('lamp04').value
             });
         });
 
